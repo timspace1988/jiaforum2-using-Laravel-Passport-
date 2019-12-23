@@ -36,7 +36,7 @@ class VerificationController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
+        $this->middleware('signed')->only('verify');//add a signiture to a route
+        $this->middleware('throttle:6,1')->only('verify', 'resend');//visit frequency limit, here: no more than 6 times in one minute
     }
 }

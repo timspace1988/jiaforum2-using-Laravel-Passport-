@@ -20,7 +20,8 @@ class EnsureEmailIsVerified
         //2. if user has not done email verification
         //3. if user's request is not email verification  nor logout
         if($request->user() && ! $request->user()->hasVerifiedEmail() && ! $request->is('email/*', 'logout')){
-            return $request->expectsJson() ? abort(403, 'Your email address is not verified.') : redirect()->route('verification.notice');//return different result based on user's client
+            return $request->expectsJson() ? abort(403, 'Your email address is not verified.') : redirect()->route('verification.notice');
+            //return notice in different way based on user's client(check if request is sent by ajax)
         }
         return $next($request);
     }
