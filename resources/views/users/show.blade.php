@@ -11,9 +11,10 @@
         <div class="card-body">
           <h5><strong>Description</strong></h5>
           <p>Name: {{ $user->name }}</p>
+          <p>{{ $user->introduction }}</p>
           <hr>
           <h5><strong>Register at:</strong></h5>
-          <p>{{ $user->created_at }}</p>
+          <p>{{ $user->created_at->diffForHumans() }}</p>
         </div>
       </div>
     </div>
