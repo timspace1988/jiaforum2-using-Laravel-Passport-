@@ -23,7 +23,7 @@ class UsersController extends Controller
         //$request->avatar will get that file
         //ImageUploadhandler::save($file, $folder, $file_prefix)
         if($request->avatar){
-            $result = $uploader->save($request->avatar, 'avatars', $user->id);
+            $result = $uploader->save($request->avatar, 'avatars', $user->id, 416);
             //in ImageUploadHandler, we make it return false if the extension is not image
             //So, we need to check the $result
             if($result){
