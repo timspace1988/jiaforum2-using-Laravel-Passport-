@@ -9,15 +9,21 @@ use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth', ['except' => ['show']]);
+    }
     public function show(User $user){
         return view('users.show', compact('user'));
     }
 
     public function edit(User $user){
+        $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
     public function update(UserRequest $request, ImageUploadHandler $uploader, User $user){
+        //call UserPolicy's update function to ensure user to be modified is the current logged in user, check policy register on documents
+        $this->authorize('update', $user);
         $data = $request->all();
         //if $request contains file (the 'avatar' is the field name on form)
         //$request->avatar will get that file
