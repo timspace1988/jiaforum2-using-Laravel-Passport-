@@ -38,3 +38,12 @@ Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->na
 Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 
 
+//User related routes
+Route::resource('users', 'UsersController', ['only' => ['show', 'edit', 'update']]);
+
+//Abouve codes equals to following
+/**
+ * Route::get('/users/{user}', 'UsersController@show')->name('users.show');
+   Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
+   Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
+ */
