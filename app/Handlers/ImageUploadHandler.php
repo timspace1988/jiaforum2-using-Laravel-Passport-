@@ -15,7 +15,7 @@ class ImageUploadHandler{
         //public_path() will get public folder's physical address
         $upload_path = public_path() . '/' . $folder_name;
 
-        //the file's name from clipping board has no extension name, we need to add png to it
+        //sometime, the file's name from clipping board has no extension name, we need to add png to it
         $extension = strtolower($file->getClientOriginalExtension()) ?:'png';
 
         //add a prefix to filename, the prefix could be related model's id
@@ -30,6 +30,6 @@ class ImageUploadHandler{
         $file->move($upload_path, $filename);
 
         //config('app.url') is public folder address on server, public_path() is the public folder physical address on local computer, e.g. /home/vagrant/Code/jiaforum/public
-        return ['path' => config('app.url') . "$folder_name/$filename"];
+        return ['path' => config('app.url') . "/$folder_name/$filename"];
     }
 }
