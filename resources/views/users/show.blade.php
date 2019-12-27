@@ -30,7 +30,19 @@
       {{-- user's post --}}
       <div class="card">
         <div class="card-body">
-          There is no data ~_~
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a href="#" class="nav-link active bg-transparent">
+                {{ $user->id === Auth::id() ? 'Your posts' : 'Posts' }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                {{ $user->id === Auth::id() ? 'Your replies' : 'Replies' }}
+              </a>
+            </li>
+          </ul>
+          @include('users._topics', ['topics' => $user->topics()->recent()->paginate(5)]);
         </div>
       </div>
     </div>

@@ -30,11 +30,11 @@
             {{ Auth::user()->name }}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a href="{{ route('users.show', Auth::id()) }}" class="dropdown-item">Account</a>
-            <a href="{{ route('users.edit', Auth::id()) }}" class="dropdown-item">Edit Profile</a>
+            <a href="{{ route('users.show', Auth::id()) }}" class="dropdown-item"><i class="far fa-user mr-2"></i>Account</a>
+            <a href="{{ route('users.edit', Auth::id()) }}" class="dropdown-item"><i class="far fa-edit mr-2"></i>Edit Profile</a>
             <div class="dropdown-divider"></div>
             <a href="#" class="dropdown-item" id="logout">
-              <form action="{{ route('logout') }}" method="POST">
+              <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Do you want to logout?')">
                 {{ csrf_field()}}
                 <button class="btn btn-block btn-danger" type="submit" name="button">Log Out</button>
               </form>
