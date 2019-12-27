@@ -7,7 +7,9 @@
 
   <!--CSRF Token-->
   <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <title>@yield('title', 'JiaForum') - Share Your Ideas</title>
+  <meta name="description" content="@yield('description', 'JiaForum-Share your ideas')">
 
   <!--Styles-->
   <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
