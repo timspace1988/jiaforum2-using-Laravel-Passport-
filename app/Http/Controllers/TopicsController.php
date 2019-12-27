@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TopicRequest;
 use App\Models\Category;
 use Auth;
+use App\Handlers\ImageUploadHandler;
 
 class TopicsController extends Controller
 {
@@ -63,4 +64,28 @@ class TopicsController extends Controller
 
 		return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
 	}
+
+    //In laravel's controller, if return an array, it will automatically be processed into JSON
+    public function uploadImage(Request $request, ImageUploadHandler $uploader){
+        //Initialize the return data, defaultly failed
+        $data = [
+            'success' => false,
+            'msg' => 'Upload failed',
+            'file_path' => ''
+        ];
+
+        //Check if there is an uploading file, and assign it to $file
+        if($file = $request->upload_file){
+            //Save image to local folder
+            $result = $uploader->save($file, 'topics', \Auth::id(), 1024);
+
+            //If image is successfully saved
+            if($result){
+                $data['file_path'] = $result['path'];
+                $data['msg'] = 'Uploaded successfully';
+                $data['success'] = true;
+            }
+        }
+        return $data;
+    }
 }
