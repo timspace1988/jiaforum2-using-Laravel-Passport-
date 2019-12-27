@@ -10,19 +10,16 @@ class TopicRequest extends Request
         {
             // CREATE
             case 'POST':
-            {
-                return [
-                    // CREATE ROLES
-                ];
-            }
             // UPDATE
             case 'PUT':
             case 'PATCH':
             {
                 return [
-                    // UPDATE ROLES
+                    'title' => 'required|min:2',
+                    'body' => 'required|min:3',
+                    'category_id' => 'required|numeric'
                 ];
-            }
+            }//post put and patch method will use same rules
             case 'GET':
             case 'DELETE':
             default:
