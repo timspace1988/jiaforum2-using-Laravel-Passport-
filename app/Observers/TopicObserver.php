@@ -28,8 +28,16 @@ class TopicObserver
         $topic->excerpt = make_excerpt($topic->body);
 
         //If a topic has not got a slug, we will give one to it by translating the title
-        if(! $topic->slug){
+        //If a topic's title is changed, we also need to update its slug
+        //isDirty(array|string|null $attr=null), check if the model's given attributes have been changed
+        if(!$topic->slug || $topic->isDirty('title')){
             $topic->slug = app(SlugTranslateHandler::Class)->translate($topic->title);
+
+            //if the translated slug is 'edit', the url will be 'http://jiaforum.test/topics/114/edit'
+            //It will always be redirected to the edit page, we can add a -slug to it
+            if(trim($topic->slug) === 'edit'){
+                $topic->slug = $topic->slug . '-slug';
+            }
         }
     }
 }
