@@ -9,8 +9,9 @@ class TopicPolicy extends Policy
 {
     public function update(User $user, Topic $topic)
     {
-        // return $topic->user_id == $user->id;
-        return true;
+        //$user is the current user, which will be injected here by laravel
+        return $topic->user_id == $user->id;
+        //return true;
     }
 
     public function destroy(User $user, Topic $topic)
