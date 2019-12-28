@@ -33,4 +33,10 @@ class Topic extends Model
     public function scopeRecent($query){
         return $query->orderBy('created_at', 'desc');
     }
+
+    //Generate topics.show link
+    //On html page, it will use this method to create link with slug (SEO friendly url)
+    public function link($params = []){
+        return route('topics.show', array_merge([$this->id, $this->slug], $params));
+    }
 }
