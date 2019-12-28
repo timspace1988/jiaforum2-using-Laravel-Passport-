@@ -10,12 +10,13 @@ class TopicPolicy extends Policy
     public function update(User $user, Topic $topic)
     {
         //$user is the current user, which will be injected here by laravel
-        return $topic->user_id == $user->id;
+        return $user->isAuthorOf($topic);
         //return true;
     }
 
     public function destroy(User $user, Topic $topic)
     {
-        return true;
+        //$user is the current user, which will be injected here by laravel
+        return $user->isAuthorOf($topic);
     }
 }

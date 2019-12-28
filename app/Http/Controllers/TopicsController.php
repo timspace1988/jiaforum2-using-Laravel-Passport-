@@ -63,7 +63,7 @@ class TopicsController extends Controller
 		$this->authorize('destroy', $topic);
 		$topic->delete();
 
-		return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
+		return redirect()->route('topics.index')->with('success', 'Deleted successfully.');
 	}
 
     //In laravel's controller, if return an array, it will automatically be processed into JSON
