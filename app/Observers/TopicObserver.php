@@ -3,7 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Topic;
-use App\Handlers\SlugTranslateHandler;
+//use App\Handlers\SlugTranslateHandler;
+use App\Jobs\TranslateSlug;
 
 // creating, created, updating, updated, saving,
 // saved,  deleting, deleted, restoring, restored
@@ -27,17 +28,22 @@ class TopicObserver
         //
         $topic->excerpt = make_excerpt($topic->body);
 
+
+    }
+
+    public function saved(Topic $topic){
         //If a topic has not got a slug, we will give one to it by translating the title
         //If a topic's title is changed, we also need to update its slug
         //isDirty(array|string|null $attr=null), check if the model's given attributes have been changed
         if(!$topic->slug || $topic->isDirty('title')){
-            $topic->slug = app(SlugTranslateHandler::Class)->translate($topic->title);
+            //$topic->slug = app(SlugTranslateHandler::Class)->translate($topic->title);
+            dispatch(new TranslateSlug($topic));
 
-            //if the translated slug is 'edit', the url will be 'http://jiaforum.test/topics/114/edit'
-            //It will always be redirected to the edit page, we can add a -slug to it
-            if(trim($topic->slug) === 'edit'){
-                $topic->slug = $topic->slug . '-slug';
-            }
         }
+
+        //The priciple here is: after we saved the $topic instance, we update the slug.
+        //The reason we dispatch the translation job after the $topic being saved
+        //is to generate the Topic ID in database first, so that the queued job could use ID
+        //to get the whole model from database
     }
 }
