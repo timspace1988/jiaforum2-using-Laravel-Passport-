@@ -32,17 +32,22 @@
         <div class="card-body">
           <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a href="#" class="nav-link active bg-transparent">
+              <a href="{{ route('users.show', $user->id) }}" class="nav-link bg-transparent {{ active_class(if_query('tab', null)) }}">
                 {{ $user->id === Auth::id() ? 'Your posts' : 'Posts' }}
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{{ route('users.show', [$user->id, 'tab' => 'replies']) }}" class="nav-link bg-transparent {{ active_class(if_query('tab', 'replies')) }}">
                 {{ $user->id === Auth::id() ? 'Your replies' : 'Replies' }}
               </a>
             </li>
           </ul>
-          @include('users._topics', ['topics' => $user->topics()->recent()->paginate(5)]);
+          @if(if_query('tab', 'replies'))
+            @include('users._replies', ['replies' => $user->replies()->with('topic')->recent()->paginate(5)])
+          @else
+            @include('users._topics', ['topics' => $user->topics()->recent()->paginate(5)])
+          @endif
+
         </div>
       </div>
     </div>
