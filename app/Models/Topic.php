@@ -41,6 +41,12 @@ class Topic extends Model
     }
 
     public function replies(){
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->recent();
+    }
+
+    //Update the topic's reply_count
+    public function updateReplyCount(){
+        $this->reply_count = $this->replies->count();
+        $this->save();
     }
 }

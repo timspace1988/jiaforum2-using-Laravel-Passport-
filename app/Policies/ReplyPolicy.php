@@ -15,6 +15,8 @@ class ReplyPolicy extends Policy
 
     public function destroy(User $user, Reply $reply)
     {
-        return true;
+        //$user is the current logged-in user
+        //Only Topic owner and reply owner can delete a reply
+        return $user->isAuthorOf($reply) || $user->isAuthorOf($reply->topic);
     }
 }

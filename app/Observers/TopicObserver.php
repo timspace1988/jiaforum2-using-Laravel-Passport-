@@ -46,4 +46,11 @@ class TopicObserver
         //is to generate the Topic ID in database first, so that the queued job could use ID
         //to get the whole model from database
     }
+
+    public function deleted(Topic $topic){
+        //When a topic is deleted, we need to delete its all replies
+        //Be careful, we should avoid using $topic->replies->delete()
+        //Because it will trigger ReplyObserver, and call Topic to update its reply_count
+        \DB::table('replies')->where('topic_id', $topic->id)->delete();
+    }
 }

@@ -16,11 +16,18 @@
           <span class="meta text-secondary" title="{{ $reply->created_at }}">{{ $reply->created_at->diffForHumans() }}</span>
 
           <!-- reply delete button -->
-          <span class="meta float-right">
-            <a title="Delete this reply">
-              <i class="far fa-trash-alt"></i>
-            </a>
-          </span>
+          @can('destroy', $reply)
+            <span class="meta float-right">
+              <form action="{{ route('replies.destroy', $reply->id) }}" onsubmit="return confirm('Are you sure to delete this reply?');" method="post">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <button type="submit" class="btn btn-default btn-xs pull-left text-secondary">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </form>
+            </span>
+          @endcan
+
         </div>
         <div class="reply-content text-secondary">
           {!! $reply->content !!}

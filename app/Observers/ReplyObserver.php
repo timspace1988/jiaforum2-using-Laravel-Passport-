@@ -34,13 +34,16 @@ class ReplyObserver
         //Attention: ->increment will return a query contructor, which is the operation on database and will not trigger the TopicObserver
 
         //The following is better
-        $reply_count = $reply->topic->replies->count();
-        $reply->topic->reply_count = $reply_count;
-        $reply->topic->save();
+        $reply->topic->updateReplyCount();
 
         //When a reply is created, we need to notify the topic owner
         $reply->topic->user->notify(new TopicReplied($reply));
         //User class defaultly uses trait Notifiable which contains notify method, notify($param) $param should be a Notification instance
+    }
+
+    public function deleted(Reply $reply){
+        //After a reply being deleted, we need to get topic's reply_count -1(here we update the real replies number)
+        $reply->topic->updateReplyCount();
     }
 
     public function updating(Reply $reply)
