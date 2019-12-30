@@ -72,4 +72,17 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function replies(){
         return $this->hasMany(Reply::class);
     }
+
+    //After user has read the notification list, marks all notifications as readed
+    public function markAsRead(){
+        //unreadNotifications() is from Notificable trait and defined in HasDatabaseNotifications
+        //it is like: return $this->notifications()->whereNull('read_at');
+        //markAsRead() is defined in DatabaseNotificationCollection,
+        //The principle is set each notification's 'read_at' a current time and save it in notifications table
+        $this->unreadNotifications->markAsRead();
+
+        //Clear the user's unread notification number, this will clear the unread notification state on navigation bar
+        $this->notification_count = 0;
+        $this->save();
+    }
 }
