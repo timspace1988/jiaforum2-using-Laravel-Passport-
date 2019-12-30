@@ -27,6 +27,8 @@ class TopicsController extends Controller
     {
         //repair the url with no slug
         if (!empty($topic->slug) && $topic->slug != $request->slug){
+            //if previous request has a session message, we need to get redirect request have it
+            session()->reflash();
             return redirect($topic->link(), 301);//301 permanent URL redirection (to correct url)
         }
         return view('topics.show', compact('topic'));

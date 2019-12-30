@@ -6,36 +6,17 @@ class ReplyRequest extends Request
 {
     public function rules()
     {
-        switch($this->method())
-        {
-            // CREATE
-            case 'POST':
-            {
-                return [
-                    // CREATE ROLES
-                ];
-            }
-            // UPDATE
-            case 'PUT':
-            case 'PATCH':
-            {
-                return [
-                    // UPDATE ROLES
-                ];
-            }
-            case 'GET':
-            case 'DELETE':
-            default:
-            {
-                return [];
-            }
-        }
+        return [
+            'content' => 'required|min:2',
+        ];
     }
 
+    //Customize some error messages if you don't like the system default message
     public function messages()
     {
         return [
-            // Validation messages
+            'content.required' => 'The reply content can not be empty.',
+            'content.min' => 'The minimum reply is 2 characters.',
         ];
     }
 }
