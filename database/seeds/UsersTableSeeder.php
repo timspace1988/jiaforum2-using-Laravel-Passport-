@@ -47,5 +47,11 @@ class UsersTableSeeder extends Seeder
         $user->email = 'timspace1988@hotmail.com';
         $user->avatar = 'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png';
         $user->save();
+        //Set first user as 'Founder' assignRole is defined in HasRoles trait, we have used it in User class
+        $user->assignRole('Founder');
+
+        //Set second user as 'Maintainer'
+        $user = User::find(2);
+        $user->assignRole('Maintainer');
     }
 }
