@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Reply;
+use App\Notifications\TopicReplied;
 
 // creating, created, updating, updated, saving,
 // saved,  deleting, deleted, restoring, restored
@@ -18,8 +19,8 @@ class ReplyObserver
         //if cleaned content is empty
         if(empty($content)){
 
-            redirect()->back()->with('danger', 'Your reply contains unaccepted content, we have removed your reply.');
-            session()->forget('success');
+            //redirect()->back()->with('danger', 'Your reply contains unaccepted content, we have removed your reply.');
+            //session()->forget('success');
             return false;
         }
 
@@ -37,6 +38,9 @@ class ReplyObserver
         $reply->topic->reply_count = $reply_count;
         $reply->topic->save();
 
+        //When a reply is created, we need to notify the topic owner
+        $reply->topic->user->notify(new TopicReplied($reply));
+        //User class defaultly uses trait Notifiable which contains notify method, notify($param) $param should be a Notification instance
     }
 
     public function updating(Reply $reply)

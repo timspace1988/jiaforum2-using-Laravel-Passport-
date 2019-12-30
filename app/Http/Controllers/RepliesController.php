@@ -20,7 +20,10 @@ class RepliesController extends Controller
 		$reply->content = $request->content;
         $reply->user_id = Auth::id();
         $reply->topic_id = $request->topic_id;
-        $reply->save();
+        $result = $reply->save();
+        if(!$result){
+            return redirect()->back()->with('danger', 'Your reply contains unaccepted content.');
+        }
 		return redirect()->to($reply->topic->link())->with('success', 'Replied successfully.');
 	}
 
