@@ -40,7 +40,17 @@
             {{ Auth::user()->name }}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <!-- Laravel-permission supports laravel's blade method can -->
+            <!-- It equals to if(auth()->user()->can('manage_contents')) -->
+            @can('manage_contents')
+              <a href="{{ url(config('administrator.uri')) }}" class="dropdown-item">
+                <i class="fas fa-tachometer-alt mr-2"></i>
+                Admin
+              </a>
+              <div class="dropdown-divider"></div>
+            @endcan
             <a href="{{ route('users.show', Auth::id()) }}" class="dropdown-item"><i class="far fa-user mr-2"></i>Account</a>
+            <div class="dropdown-divider"></div>
             <a href="{{ route('users.edit', Auth::id()) }}" class="dropdown-item"><i class="far fa-edit mr-2"></i>Edit Profile</a>
             <div class="dropdown-divider"></div>
             <a href="#" class="dropdown-item" id="logout">
