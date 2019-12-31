@@ -88,10 +88,19 @@ return array(
      *
      * @type closure
      */
-    'permission' => function () {
-        //Only administrators can access the admin page (This project: Founder and Maintainer)
-        return Auth::check() && Auth::user()->can('manage_contents');
-    },
+    // 'permission' => function () {
+    //     //Only administrators can access the admin page (This project: Founder and Maintainer)
+    //     return Auth::check() && Auth::user()->can('manage_contents');
+    // },
+
+    /**
+     * In order to boost out application's speed, we need to cache all configuration for our frame work
+       You can simply use 'php artisan config:cache' in git bash.
+       However, if we have closure function in any config files, after we cache it, the application will
+       pop errors.
+       The soulution to this is to write your closure function in helpers.php file, and set the function name here, So we change above 'permission' => function() to:
+     */
+    'permission' => 'manageContents', //will call manageContents() in /app/helpers.php file
 
     /*
      * This determines if you will have a dashboard (whose view you provide in the dashboard_view option) or a non-dashboard home

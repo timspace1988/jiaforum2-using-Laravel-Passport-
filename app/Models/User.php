@@ -86,4 +86,33 @@ class User extends Authenticatable implements MustVerifyEmailContract
         $this->notification_count = 0;
         $this->save();
     }
+
+    //Eloquent model's attribute modifier, format is setParticularAttribute($value)
+    //e.g. setPasswordAttribute($value), this will be called when you do $user->password = 'password'
+    //and will be executed before data is saved into database
+
+    public function setPasswordAttribute($value){
+        //Check if the $value is in hash format (has 60 characters)
+        //if $value lenth is 60, that means it has been encrypted, we will use it directly,
+        //otherwise, encrypt it
+        if(strlen($value) != 60){
+            $value = bcrypt($value);
+        }
+
+        $this->attributes['password'] = $value;
+    }
+
+    //User's avatar modifier
+    public function setAvatarAttribute($path){
+        //We need to check if the new path is started with http,
+        //If not, that means it is uploaded from Administrator at back (only a file name), we need to modify it
+        //If it begins with http, that means it is uploaded by user when updating profile, it's a full path
+        //We can use it directly
+        if(! \Str::startsWith($path, 'http')){
+            //Make it a full path,  administrator upload images to upload/images/avatars folder
+            $path = config('app.url') . "/upload/images/avatars/$path";
+        }
+
+        $this->attributes['avatar'] = $path;
+    }
 }
