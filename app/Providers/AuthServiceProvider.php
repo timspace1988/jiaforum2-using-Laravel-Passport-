@@ -32,5 +32,11 @@ class AuthServiceProvider extends ServiceProvider
             //e.g. App\Model\User' => 'App\Policies\UserPolicy'
             return 'App\Policies\\' . class_basename($modelClass) . 'Policy';
         });
+
+        //Only 'Founder' can access Horizon page (Queue job monitor)
+        \Horizon::auth(function($request){
+            //Check if the current user is 'Founder'
+            return \Auth::user()->hasRole('Founder');
+        });
     }
 }
