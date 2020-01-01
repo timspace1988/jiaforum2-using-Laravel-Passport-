@@ -79,7 +79,11 @@ return array(
      *  ]
      */
     'menu' => [
-        'Users & Permissions' => ['users'],
+        'Users & Permissions' => [
+            'users',
+            'roles',
+            'permissions',
+        ],
     ],
 
     /*
