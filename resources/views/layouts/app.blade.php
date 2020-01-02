@@ -7,9 +7,10 @@
 
   <!--CSRF Token-->
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
-  <title>@yield('title', 'JiaForum') - Share Your Ideas</title>
-  <meta name="description" content="@yield('description', 'JiaForum-Share your ideas')">
+  <!--setting($key, $default = '', $setting_name = 'site') provided by Administrator-->
+  <title>@yield('title', 'JiaForum') - {{ setting('site_name', 'Share Your Ideas') }}</title>
+  <meta name="description" content="@yield('description', setting('seo_description', 'JiaForum-Share your ideas'))">
+  <meta name="keyword" content="@yield('keyword', setting('seo_keyword', 'forum, community, laravel, JiaForum'))">
 
   <!--Styles-->
   <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
