@@ -3,7 +3,7 @@
 use Spatie\Permission\Models\Permission;
 
 return [
-    'title' => 'Permision',
+    'title' => 'Permisions',
     'single' => 'permission',
     'model' => Permission::class,
 

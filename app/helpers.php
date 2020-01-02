@@ -15,6 +15,7 @@ function make_excerpt($value, $length = 200){
     return Str::limit($excerpt, $length);
 }
 
+
 if(!function_exists('manageContents')){
     function manageContents(){
         return Auth::check() && Auth::user()->can('manage_contents');
@@ -40,3 +41,35 @@ if(!function_exists('administratorOutputUsersName')){
     }
 }
 
+function model_admin_link($title, $model){
+    return model_link($title, $model, 'admin');
+}
+
+function model_link($title, $model, $prefix = ''){
+    $model_name = model_plural_name($model);//变复数
+
+    //Initialize the prefix
+    $prefix = $prefix ? "/$prefix/" : '/';
+
+    //Make full url by using site's url
+    $url = config('app.url') . $prefix . $model_name. '/' . $model->id;
+
+    //Return a full HTML <a> tag
+    return '<a href="' . $url . '" target="_blank">' . $title . '</a>';
+
+    //return $title;
+}
+
+function model_plural_name($model){
+    //Get the full class name by using a model instance
+    $full_class_name = get_class($model);//e.g. App\Models\User
+
+    //Get base name of the class e.g. App\Models\User -> User
+    $class_name = class_basename($full_class_name);
+
+    //Snake name e.g. User->user, FooBar -> foo-bar
+    $snake_case_name = Str::snake($class_name);
+
+    //Get the plural form
+    return Str::plural($snake_case_name);
+}

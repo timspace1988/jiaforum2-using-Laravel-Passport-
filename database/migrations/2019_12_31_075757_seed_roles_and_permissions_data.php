@@ -44,7 +44,7 @@ class SeedRolesAndPermissionsData extends Migration
     public function down()
     {
         //Clear cache, otherwise errors will pop up
-        app(Spatie\Permission\PermissionRegister::class)->forgetCachedPermissions();
+        app(Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 
         //Clear all permission related tables
         $tableNames = config('permission.table_names');
