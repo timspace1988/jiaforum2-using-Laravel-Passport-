@@ -14,6 +14,7 @@ class Topic extends Model
         return $this->belongsTo(User::class);
     }
     //Check scope on document
+    //Note:Topic::withOrder() and $topic->withOrder(), actually pass Topic/$topic as first param($query)into the function
     public function scopeWithOrder($query, $order){
         switch($order){
             case 'recent':
