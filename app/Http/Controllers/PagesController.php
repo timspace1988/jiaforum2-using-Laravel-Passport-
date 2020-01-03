@@ -16,7 +16,7 @@ class PagesController extends Controller
         //Because after unlogged-in user sign in, it will be automatically redirected to previous page(permission_denied page), so you need to recheck it
         //we define permission => function(){...} in config/administrator.php,
         //config('administrator.permission')() is actually permission()
-        //config('administrator') will return the function, but doesn't execure
+        //config('administrator') will return the function, but doesn't execute
         if(config('administrator.permission')()){
             return redirect(url(config('administrator.uri')), 302);
         }
