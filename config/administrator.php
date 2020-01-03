@@ -137,7 +137,8 @@ return array(
      */
     //Set the menu items to be displayed on non-dashboard home page.
     //Menu items are those you wirte in menu =>[]
-    'home_page' => 'users',
+    //'home_page' => 'users',
+    'home_page' => 'topics',
 
     /*
      * The route to which the user will be taken when they click the "back to site" button
@@ -152,7 +153,8 @@ return array(
      *
      * @type string
      */
-    'login_path' => 'login',
+    //'login_path' => 'login',
+    'login_path' => 'permission-denied',
 
     /*
      * The logout path is the path where Administrator will send the user when they click the logout link

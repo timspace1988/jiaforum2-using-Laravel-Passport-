@@ -60,3 +60,7 @@ Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]
 
 // Notification routes
 Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
+
+// Go to admin page permission denied redirect route
+Route::get('permission-denied', 'PagesController@permissionDenied')->name('permission-denied');
+
