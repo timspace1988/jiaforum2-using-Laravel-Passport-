@@ -96,6 +96,10 @@ class User extends Authenticatable implements MustVerifyEmailContract
     //and will be executed before data is saved into database
 
     public function setPasswordAttribute($value){
+        //If $value is empty '',
+        if(empty($value)){
+            return;
+        }
         //Check if the $value is in hash format (has 60 characters)
         //if $value lenth is 60, that means it has been encrypted, we will use it directly,
         //otherwise, encrypt it
