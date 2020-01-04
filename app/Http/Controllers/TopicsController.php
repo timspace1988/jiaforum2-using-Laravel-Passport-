@@ -10,6 +10,7 @@ use App\Models\Category;
 use Auth;
 use App\Handlers\ImageUploadHandler;
 use App\Models\User;
+use App\Models\Link;
 
 class TopicsController extends Controller
 {
@@ -18,7 +19,7 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-	public function index(Request $request, User $user)
+	public function index(Request $request, User $user, Link $link)
 	{
 		$topics = Topic::withOrder($request->order)->with('user', 'category')->paginate(20);
 
@@ -27,7 +28,10 @@ class TopicsController extends Controller
 
         //dd($active_users);
 
-		return view('topics.index', compact('topics', 'active_users'));
+        //Get the recommended resources link
+        $links = $link->getAllCached();
+
+		return view('topics.index', compact('topics', 'active_users', 'links'));
 	}
 
     public function show(Request $request, Topic $topic)

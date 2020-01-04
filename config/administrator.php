@@ -90,8 +90,9 @@ return array(
             'replies',
         ],
         'Site settings' => [
-            'settings.site',
             //According to settings_config_path, we will put site file under administrator/settings folder. So, here we write settings.site
+            'settings.site',
+            'links',
         ],
     ],
 
