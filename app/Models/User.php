@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmailContract
 {
+    use Traits\LastActiveAtHelper;
     use Traits\ActiveUserHelper;
     use HasRoles;
     use MustVerifyEmailTrait;
@@ -58,6 +59,8 @@ class User extends Authenticatable implements MustVerifyEmailContract
      *
      * @var array
      */
+    //Laravel will automatically transfer the converted data into Carbon instance
+    //Then you can call $user->email_verified_at->diffForHumans
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

@@ -27,8 +27,11 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         //We have set our crontab, it will call this schedule once per minute,
-        //Laravel will check and evalute the following code, can execute it as you scheduled
+        //Laravel will check and evalute the following code, then execute it as you scheduled
         $schedule->command('jiaforum:calculate-active-user')->hourly();
+
+        //Execute this code at 0:00 every day
+        $schedule->command('jiaforum:sync-user-active-at')->dailyAt('00:00');
     }
 
     /**
