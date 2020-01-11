@@ -4,10 +4,49 @@ namespace App\Handlers;
 
 use Illuminate\Support\Str;
 use Image;
+use Illuminate\Support\Facades\Storage;
 
 class ImageUploadHandler{
     //only allow to upload images with following extensions
     protected $allowed_ext = ['png', 'jpg', 'gif', 'jpeg'];
+
+    public function saveToS3($file, $folder, $file_prefix, $max_width = false){
+        //build folders for imaged
+        $key_name = "upload/images/$folder/" . date("Ym/d", time());
+
+        $extension = strtolower($file->getClientOriginalExtension()) ?:'png';
+
+        //add a prefix to filename, the prefix could be related model's id
+        $filename = $file_prefix . '_' . time() . '_' . Str::random(10) . '.' . $extension;
+
+        //if the uploaded file is not a image, will terminate the operation
+        if(! in_array($extension, $this->allowed_ext)){
+            return false;
+        }
+
+        /*
+        If we have max_width limit, we need to resize the image
+        We need to reduce the size when image is uploaded in the temparay folder
+        Beacuse we the tool we use cannnot modify the file on remote server
+        */
+        //$original_name = $file->getClientOriginalName();
+        $tmp_path = $file->getPathName();
+
+        //dd($original_name);
+        //dd($tmp_path);
+        //dd("$tmp_path/$original_name");
+
+        if($max_width && $extension !='gif'){
+            $this->reduceSize($tmp_path, $max_width);
+        }
+
+        $path = Storage::disk('s3')->putFileAs($key_name, $file, $filename);
+        //$path = $file->storeAs($key_name, $filename, 's3');//Same with above
+        $url = Storage::disk('s3')->url($path);
+
+        return ['path' => $url];
+
+    }
 
     public function save($file, $folder, $file_prefix, $max_width = false){
         //build folder structure

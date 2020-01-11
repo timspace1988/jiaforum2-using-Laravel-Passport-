@@ -95,7 +95,8 @@ class TopicsController extends Controller
         //Check if there is an uploading file, and assign it to $file
         if($file = $request->upload_file){
             //Save image to local folder
-            $result = $uploader->save($file, 'topics', \Auth::id(), 1024);
+            //$result = $uploader->save($file, 'topics', \Auth::id(), 1024);
+            $result = $uploader->saveToS3($file, 'topics', \Auth::id(), 1024);
 
             //If image is successfully saved
             if($result){
