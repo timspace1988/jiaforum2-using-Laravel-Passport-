@@ -97,16 +97,42 @@ function get_db_config(){
     }
 }
 
-//Get redis config info
+//Get redis instance config info
 function get_redis_config(){
     if(getenv('IS_IN_HEROKU')){
         $url = parse_url(getenv('REDIS_URL'));
+
 
         return [
             'url' => getenv('REDIS_URL'),
             'host' => $url['host'],
             'password' => $url['pass'],
             'port' => $url['port'],
+            // 'database' => $url['user'],
+            // 'database_cache' => $url['user'],
+        ];
+    }else{
+        return [
+            'url' => env('REDIS_URL'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            // 'database' => env('REDIS_DB', 0),
+            // 'database_cache' => env('REDIS_DB', 1),
+        ];
+    }
+}
+
+//Get redis instance for cache config info
+function get_redis_cache_config(){
+    if(getenv('IS_IN_HEROKU')){
+        $url_cache = parse_url(getenv('HEROKU_REDIS_SILVER_URL'));
+
+        return [
+            'url' => getenv('HEROKU_REDIS_SILVER_URL'),
+            'host' => $url_cache['host'],
+            'password' => $url_cache['pass'],
+            'port' => $url_cache['port'],
             // 'database' => $url['user'],
             // 'database_cache' => $url['user'],
         ];

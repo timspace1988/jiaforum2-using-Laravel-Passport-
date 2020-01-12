@@ -4,6 +4,7 @@ use Illuminate\Support\Str;
 
 $db_config = get_db_config();
 $redis_config = get_redis_config();
+$redis_cache_config = get_redis_cache_config();
 
 return [
 
@@ -149,10 +150,10 @@ return [
             // 'password' => env('REDIS_PASSWORD', null),
             // 'port' => env('REDIS_PORT', 6379),
             // 'database' => env('REDIS_CACHE_DB', 1),
-            'url' => $redis_config['url'],
-            'host' => $redis_config['host'],
-            'password' => $redis_config['password'],
-            'port' => $redis_config['port'],
+            'url' => $redis_cache_config['url'],
+            'host' => $redis_cache_config['host'],
+            'password' => $redis_cache_config['password'],
+            'port' => $redis_cache_config['port'],
             //'database' => $redis_config['database_cache'],
             'database' => env('REDIS_CACHE_DB', 1),
         ],
