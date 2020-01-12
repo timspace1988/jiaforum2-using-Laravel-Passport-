@@ -100,7 +100,7 @@ function get_db_config(){
 //Get redis config info
 function get_redis_config(){
     if(getenv('IS_IN_HEROKU')){
-        $url = parse_url(getenv(REDIS_URL));
+        $url = parse_url(getenv('REDIS_URL'));
 
         return [
             'url' => $url,
