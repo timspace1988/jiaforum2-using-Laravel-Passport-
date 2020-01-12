@@ -39,7 +39,8 @@ class SeedRolesAndPermissionsData extends Migration
 
         //In in the heroku environment, we need to create a user as administrator
         if(getenv('IS_IN_HEROKU')){
-            $user = User::create([
+            Model::unguard();
+            User::create([
                 'name' => 'JIA',
                 'email' => 'timspace1988@hotmail.com',
                 'email_verified_at' => now(),
@@ -59,7 +60,12 @@ class SeedRolesAndPermissionsData extends Migration
                 $user->assignRole('Founder');
                 */
             ]);
+            Model::reguard();
 
+            $user = User::find(1);
+            // $user->email_verified_at = now();
+            // $user->remember_token = Str::random(10);
+            // $user->save();
             $user->assignRole('Founder');
         }
     }
