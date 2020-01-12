@@ -108,6 +108,7 @@ function get_redis_config(){
             'password' => $url['pass'],
             'port' => $url['port'],
             'database' => $url['user'],
+            'database_cache' => $url['user'],
         ];
     }else{
         return [
@@ -116,6 +117,7 @@ function get_redis_config(){
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_DB', 0),
+            'database_cache' => env('REDIS_DB', 1),
         ];
     }
 }
