@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
+use Illuminate\Support\Str;
 
 class SeedRolesAndPermissionsData extends Migration
 {
@@ -34,6 +36,32 @@ class SeedRolesAndPermissionsData extends Migration
         //Create the role 'maintainer' and give him some permissions
         $maintainer = Role::create(['name' => 'Maintainer']);
         $maintainer->givePermissionTo('manage_contents');
+
+        //In in the heroku environment, we need to create a user as administrator
+        if(getenv('IS_IN_HEROKU')){
+            $user = User::create([
+                'name' => 'JIA',
+                'email' => 'timspace1988@hotmail.com',
+                'email_verified_at' => now(),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'remember_token' => Str::random(10),
+                'introduction' => 'This is JIA',
+                'created_at' => now(),
+                'updated_at' => now(),
+                'avatar' => 'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png',
+                /*
+                $user = User::find(1);
+                $user->name = 'JIA';
+                $user->email = 'timspace1988@hotmail.com';
+                $user->avatar = 'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png';
+                $user->save();
+                //Set first user as 'Founder' assignRole is defined in HasRoles trait, we have used it in User class
+                $user->assignRole('Founder');
+                */
+            ]);
+
+            $user->assignRole('Founder');
+        }
     }
 
     /**

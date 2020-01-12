@@ -44,7 +44,7 @@ class AddReferences extends Migration
         Schema::table('topics', function(Blueprint $table){
             //Remove the foreign key restrition on replies table
             $table->dropForeign(['user_id']);
-            $table->dropForeign(['topic_id']);
+            $table->dropForeign(['topic_idsubl']);
         });
     }
 }

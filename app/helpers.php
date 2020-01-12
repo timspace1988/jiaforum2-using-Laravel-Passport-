@@ -73,3 +73,26 @@ function model_plural_name($model){
     //Get the plural form
     return Str::plural($snake_case_name);
 }
+
+//Get database config info based on environment
+function get_db_config(){
+    if(getenv('IS_IN_HEROKU')){
+        $url = parse_url(getenv('DATABASE_URL'));
+
+        return $db_config = [
+            'connection' => 'pgsql',
+            'host' => $url['host'],
+            'database' => substr($url['path'], 1),
+            'username' => $url['user'],
+            'password' => $url['pass'],
+        ];
+    }else{
+        return $db_config = [
+            'connection' => env('DB_CONNECTION', 'mysql'),
+            'host' => env('DB_HOST', 'localhost'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DATABASE_USERNAME', 'forge'),
+            'password' => env('DATABASE_PASSWORD', ''),
+        ];
+    }
+}
