@@ -139,7 +139,8 @@ return [
             'host' => $redis_config['host'],
             'password' => $redis_config['password'],
             'port' => $redis_config['port'],
-            'database' => $redis_config['database'],
+            //'database' => $redis_config['database'],
+            'database' => env('REDIS_DB', 0),
         ],
 
         'cache' => [
@@ -152,7 +153,8 @@ return [
             'host' => $redis_config['host'],
             'password' => $redis_config['password'],
             'port' => $redis_config['port'],
-            'database' => $redis_config['database_cache'],
+            //'database' => $redis_config['database_cache'],
+            'database' => env('REDIS_CACHE_DB', 1),
         ],
 
     ],

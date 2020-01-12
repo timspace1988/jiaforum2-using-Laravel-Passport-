@@ -107,8 +107,8 @@ function get_redis_config(){
             'host' => $url['host'],
             'password' => $url['pass'],
             'port' => $url['port'],
-            'database' => $url['user'],
-            'database_cache' => $url['user'],
+            // 'database' => $url['user'],
+            // 'database_cache' => $url['user'],
         ];
     }else{
         return [
@@ -116,8 +116,8 @@ function get_redis_config(){
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DB', 0),
-            'database_cache' => env('REDIS_DB', 1),
+            // 'database' => env('REDIS_DB', 0),
+            // 'database_cache' => env('REDIS_DB', 1),
         ];
     }
 }
