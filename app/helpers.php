@@ -103,7 +103,7 @@ function get_redis_config(){
         $url = parse_url(getenv('REDIS_URL'));
 
         return [
-            'url' => $url,
+            'url' => getenv('REDIS_URL'),
             'host' => $url['host'],
             'password' => $url['pass'],
             'port' => $url['port'],
