@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "barryvdh/laravel-debugbar": "~3.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~6.3",
         "intervention/image": "^2.5",
@@ -26,7 +27,6 @@
         "viacreative/sudo-su": "~1.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "~3.2",
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",
         "laravel/ui": "^1.1",
