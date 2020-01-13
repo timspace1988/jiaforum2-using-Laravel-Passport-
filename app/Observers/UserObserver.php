@@ -22,7 +22,7 @@ class UserObserver
     public function saving(User $user){
         //Only when user has no avatar(e.g. New registered user), we give it a default avatar
         if(empty($user->avatar)){
-            $user->avatar = 'https://cdn.learnku.com/uploads/images/201710/30/1/TrJS40Ey5k.png';
+            $user->avatar = 'https://jiaforum.s3.us-east-2.amazonaws.com/upload/images/avatars/default_avatar.jpg';
         }
     }
 }
