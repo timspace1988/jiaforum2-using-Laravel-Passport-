@@ -4,6 +4,7 @@ namespace App\Handlers;
 
 use GuzzleHttp\Client;
 
+
 class SmsHandler
 {
     private $settings;
@@ -41,12 +42,21 @@ class SmsHandler
             'senderid' => $from,
         ]);
 
-        $response = $http->get($api.$query);//get a xml response
+        $response = $http->get($api.$query);
+
+        // try{
+        //     $response = $http->get($api.$query);
+        // }catch(Exception $e){
+        //     $m = $e->getMessage();
+        //     dd($m);
+        //     abort(500, 'Some error happened.');
+        // }
+
 
         //$result = simplexml_load_string($response);//convert xml to an object
 
         //dd($response);
-        return;
+        return $response;
     }
 
     //This is a test using post method
