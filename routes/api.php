@@ -23,6 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::namespace('Api\V1')->prefix('v1')->name('api.v1.')->group(function(){
     //sms verification
     Route::post('verificationCodes', 'VerificationCodesController@store')->name('verificationCodes.store');
+    //User registration
+    Route::post('users', 'UsersController@store')->name('users.store');
 });
 
 // Route::prefix('v2')->name('api.v2.')->group(function(){
