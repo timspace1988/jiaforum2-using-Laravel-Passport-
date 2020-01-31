@@ -29,6 +29,8 @@ Route::namespace('Api\V1')
                 Route::post('verificationCodes', 'VerificationCodesController@store')->name('verificationCodes.store');
                 //User registration
                 Route::post('users', 'UsersController@store')->name('users.store');
+                //Captchas verification
+                Route::post('captchas', 'CaptchasController@store')->name('captchas.store');
             });
 
         Route::middleware('throttle:' . config('api.rate_limits.access'))

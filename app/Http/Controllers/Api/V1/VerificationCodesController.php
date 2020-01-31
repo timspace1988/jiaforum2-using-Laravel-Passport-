@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Handlers\SmsHandler;
 use App\Http\Requests\Api\V1\VerificationCodeRequest;
+use Illuminate\Auth\AuthenticationException;
 
 //t will automatically extends the Controller in same namespace
 class VerificationCodesController extends Controller
@@ -15,7 +16,21 @@ class VerificationCodesController extends Controller
     public function store(VerificationCodeRequest $request, SmsHandler $sender){
         //return response()->json(['test_message' => 'store verification code']);
 
-        $phone = $request->phone;
+        $captchaData = \Cache::get($request->captcha_key);
+
+        //If cannot retrieve the captcha data
+        if(!$captchaData){
+            abort(403, 'The captcha does not exist or has been expired.');
+        }
+
+        //If input captcha code does not match the code in cache
+        if(!hash_equals($captchaData['code'], $request->captcha_code)){
+            //Clear the cache
+            \Cache::forget($request->captcha_key);
+            throw new AuthenticationException('The input captcha is incorrect');
+        }
+
+        $phone = $captchaData['phone'];
 
 
         //In local or test environment, use '1234' as code for test.
@@ -44,6 +59,8 @@ class VerificationCodesController extends Controller
 
         //Put verification code in cache and set it expired in 5 minutes
         \Cache::put($key, ['phone' => $phone, 'code' => $code], $expiredAt);
+        //Clear the captcha key in cache
+        \Cache::forget($request->captcha_key);
 
         return response()->json([
             'key' => $key,
