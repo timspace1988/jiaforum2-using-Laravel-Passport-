@@ -25,12 +25,16 @@ Route::namespace('Api\V1')
     ->group(function(){
         Route::middleware('throttle:' . config('api.rate_limits.sign'))
             ->group(function (){
+                //Captchas verification
+                Route::post('captchas', 'CaptchasController@store')->name('captchas.store');
                 //sms verification
                 Route::post('verificationCodes', 'VerificationCodesController@store')->name('verificationCodes.store');
                 //User registration
                 Route::post('users', 'UsersController@store')->name('users.store');
-                //Captchas verification
-                Route::post('captchas', 'CaptchasController@store')->name('captchas.store');
+                //Login using third parth application
+                Route::post('socials/{social_type}/authorizations', 'AuthorizationsController@socialStore')
+                    ->where('social_type', 'weixin|weibo')
+                    ->name('socials.authorizations.store');
             });
 
         Route::middleware('throttle:' . config('api.rate_limits.access'))
