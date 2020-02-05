@@ -8,8 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmailContract
+class User extends Authenticatable implements MustVerifyEmailContract, JWTSubject
 {
     use Traits\LastActiveAtHelper;
     use Traits\ActiveUserHelper;
@@ -122,5 +123,18 @@ class User extends Authenticatable implements MustVerifyEmailContract
         }
 
         $this->attributes['avatar'] = $path;
+    }
+
+
+    //Following function is implemented from JWTSubject and used for api
+
+    //This will return user's ID
+    public function getJWTIdentifier(){
+        return $this->getKey();
+    }
+
+    //This is what we want to add to JWT's payload
+    public function getJWTCustomClaims(){
+        return [];
     }
 }

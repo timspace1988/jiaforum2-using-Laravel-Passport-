@@ -31,10 +31,19 @@ Route::namespace('Api\V1')
                 Route::post('verificationCodes', 'VerificationCodesController@store')->name('verificationCodes.store');
                 //User registration
                 Route::post('users', 'UsersController@store')->name('users.store');
+                //Login
+                Route::post('authorizations', 'AuthorizationsController@store')
+                    ->name('api.authorizations.store');
                 //Login using third parth application
                 Route::post('socials/{social_type}/authorizations', 'AuthorizationsController@socialStore')
                     ->where('social_type', 'weixin|weibo')
                     ->name('socials.authorizations.store');
+                //Refresh login access token
+                Route::put('authorizations/current', 'AuthorizationsController@update')
+                    ->name('authorizations.update');
+                //Delete the login access token
+                Route::delete('authorizations/current', 'AuthorizationsController@destroy')
+                    ->name('authorizations.destroy');
             });
 
         Route::middleware('throttle:' . config('api.rate_limits.access'))
