@@ -48,7 +48,15 @@ Route::namespace('Api\V1')
 
         Route::middleware('throttle:' . config('api.rate_limits.access'))
             ->group(function () {
-
+                //Get a user's info (visitors can access)
+                Route::get('users/{user}', 'UsersController@show')
+                    ->name('users.show');
+                //The apis for users who have have signed in
+                //Get current signed-in user's info
+                Route::middleware('auth:api')->group(function(){
+                    Route::get('user', 'UsersController@me')
+                    ->name('user.show');
+                });
             });
 
 });

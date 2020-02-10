@@ -34,6 +34,17 @@ class UsersController extends Controller
         //clear the verification info in cache
         \Cache::forget($request->verification_key);
 
+        //$user is a model, the instance of UserResoure will respresent it in json
+        //and autometically call toArray method to return an array to client
+        return (new UserResource($user))->showSensitiveFields();
+    }
+
+    public function show(User $user, Request $request){
         return new UserResource($user);
+    }
+
+    public function me(Request $request){
+        return (new UserResource($request->user()))->showSensitiveFields();
+        //If user has been verified by auth:api, we can get it using $request->user()
     }
 }
