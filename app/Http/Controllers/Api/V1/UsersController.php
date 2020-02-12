@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\Api\V1\UserRequest;
 use Illuminate\Auth\AuthenticationException;
+use App\Models\Image;
 
 
 class UsersController extends Controller
@@ -46,5 +47,19 @@ class UsersController extends Controller
     public function me(Request $request){
         return (new UserResource($request->user()))->showSensitiveFields();
         //If user has been verified by auth:api, we can get it using $request->user()
+    }
+
+    //Update user info
+    public function update(UserRequest $request){
+        $user = $request->user();
+        $attributes = $request->only(['name', 'email', 'introduction']);
+
+        if($request->avatar_image_id){
+            $image = Image::find($request->avatar_image_id);
+            $attributes['avatar'] = $image->path;
+        }
+
+        $user->update($attributes);
+        return (new UserResource($user))->showSensitiveFields();
     }
 }
