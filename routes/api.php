@@ -51,6 +51,8 @@ Route::namespace('Api\V1')
                 //Get a user's info (visitors can access)
                 Route::get('users/{user}', 'UsersController@show')
                     ->name('users.show');
+                Route::get('categories', 'CategoriesController@index')
+                    ->name('categories.index');
                 //The apis for users who have have signed in
                 Route::middleware('auth:api')->group(function(){
                     //Get current signed-in user's info
