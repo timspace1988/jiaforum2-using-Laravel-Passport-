@@ -48,11 +48,16 @@ Route::namespace('Api\V1')
 
         Route::middleware('throttle:' . config('api.rate_limits.access'))
             ->group(function () {
+                //Apis for visitors
                 //Get a user's info (visitors can access)
                 Route::get('users/{user}', 'UsersController@show')
                     ->name('users.show');
                 Route::get('categories', 'CategoriesController@index')
                     ->name('categories.index');
+                //Topics list and details
+                Route::resource('topics', 'TopicsController')
+                    ->only(['index', 'show']);
+
                 //The apis for users who have have signed in
                 Route::middleware('auth:api')->group(function(){
                     //Get current signed-in user's info
@@ -64,6 +69,9 @@ Route::namespace('Api\V1')
                     //Upload image
                     Route::post('images', 'ImagesController@store')
                         ->name('images.store');
+                    //Create update and delete topic
+                    Route::resource('topics', 'TopicsController')
+                        ->only(['store', 'update', 'destroy']);
                 });
             });
 
