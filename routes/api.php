@@ -52,8 +52,12 @@ Route::namespace('Api\V1')
                 //Get a user's info (visitors can access)
                 Route::get('users/{user}', 'UsersController@show')
                     ->name('users.show');
+                //Get categories list
                 Route::get('categories', 'CategoriesController@index')
                     ->name('categories.index');
+                //A user's topics(posts) list
+                Route::get('users/{user}/topics', 'TopicsController@userIndex')
+                    ->name('users.topics.index');
                 //Topics list and details
                 Route::resource('topics', 'TopicsController')
                     ->only(['index', 'show']);

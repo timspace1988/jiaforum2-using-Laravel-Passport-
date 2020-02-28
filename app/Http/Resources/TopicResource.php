@@ -14,6 +14,10 @@ class TopicResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        //whenLoaded is used here becauase we use ->with('user') to do pre-load in TopicsController
+        $data['user'] = new UserResource($this->whenLoaded('user'));
+        $data['category'] = new CategoryResource($this->whenLoaded('category'));
+        return $data;
     }
 }
