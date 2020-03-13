@@ -76,6 +76,9 @@ Route::namespace('Api\V1')
                     //Create update and delete topic
                     Route::resource('topics', 'TopicsController')
                         ->only(['store', 'update', 'destroy']);
+                    //Post a reply
+                    Route::post('topics/{topic}/replies', 'RepliesController@store')
+                        ->name('topics.replies.store');
                 });
             });
 
