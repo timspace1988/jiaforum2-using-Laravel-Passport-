@@ -79,6 +79,9 @@ Route::namespace('Api\V1')
                     //Post a reply
                     Route::post('topics/{topic}/replies', 'RepliesController@store')
                         ->name('topics.replies.store');
+                    //Delete a reply
+                    Route::delete('topics/{topic}/replies/{reply}', 'RepliesController@destroy')
+                        ->name('topics.replies.destroy');
                 });
             });
 
