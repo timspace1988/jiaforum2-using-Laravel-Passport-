@@ -8,9 +8,26 @@ use App\Models\Reply;
 use Illuminate\Http\Request;
 use App\Http\Resources\ReplyResource;
 use App\Http\Requests\Api\V1\ReplyRequest;
+use App\Http\Queries\ReplyQuery;
 
 class RepliesController extends Controller
 {
+    //Get a topic's replies list
+    public function index($topicId, ReplyQuery $query){
+        //$replies = $topic->replies()->paginate();
+
+        $replies = $query->where('topic_id', $topicId)->paginate();
+
+        return ReplyResource::collection($replies);
+    }
+
+    //Get a user's replies list
+    public function userIndex($userId, ReplyQuery $query){
+        $replies = $query->where('user_id', $userId)->paginate();
+
+        return ReplyResource::collection($replies);
+    }
+
     //Create a reply
     public function store(ReplyRequest $request, Topic $topic, Reply $reply){
         $reply->content = $request->content;

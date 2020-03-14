@@ -61,6 +61,12 @@ Route::namespace('Api\V1')
                 //Topics list and details
                 Route::resource('topics', 'TopicsController')
                     ->only(['index', 'show']);
+                //A topic's replies list
+                Route::get('topics/{topic}/replies', 'RepliesController@index')
+                    ->name('topics.replies.index');
+                //A user's replies list
+                Route::get('users/{user}/replies', 'RepliesController@userIndex')
+                    ->name('users.replies.index');
 
                 //The apis for users who have have signed in
                 Route::middleware('auth:api')->group(function(){
