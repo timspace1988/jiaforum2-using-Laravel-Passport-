@@ -88,6 +88,9 @@ Route::namespace('Api\V1')
                     //Delete a reply
                     Route::delete('topics/{topic}/replies/{reply}', 'RepliesController@destroy')
                         ->name('topics.replies.destroy');
+                    //Get notification list
+                    Route::get('notifications', 'NotificationsController@index')
+                        ->name('notifications.index');
                 });
             });
 
