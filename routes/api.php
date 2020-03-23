@@ -91,6 +91,9 @@ Route::namespace('Api\V1')
                     //Get notification list
                     Route::get('notifications', 'NotificationsController@index')
                         ->name('notifications.index');
+                    //Get notification stats (unread notification reminder)
+                    Route::get('notifications/stats', 'NotificationsController@stats')
+                        ->name('notifications.stats');
                 });
             });
 

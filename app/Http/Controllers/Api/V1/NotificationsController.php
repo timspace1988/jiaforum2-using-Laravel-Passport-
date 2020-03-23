@@ -14,4 +14,11 @@ class NotificationsController extends Controller
 
         return NotificationResource::collection($notifications);
     }
+
+    //Get notifications stats (unread notifications reminder)
+    public function stats(Request $request){
+        return response()->json([
+            'unread_count' => $request->user()->notification_count,
+        ]);
+    }
 }
