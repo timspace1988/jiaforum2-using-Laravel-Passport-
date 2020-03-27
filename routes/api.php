@@ -94,6 +94,9 @@ Route::namespace('Api\V1')
                     //Get notification stats (unread notification reminder)
                     Route::get('notifications/stats', 'NotificationsController@stats')
                         ->name('notifications.stats');
+                    //Mark the notifications as read
+                    Route::patch('user/read/notifications', 'NotificationsController@read')
+                        ->name('user.notifications.read');
                 });
             });
 
