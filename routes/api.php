@@ -97,6 +97,9 @@ Route::namespace('Api\V1')
                     //Mark the notifications as read
                     Route::patch('user/read/notifications', 'NotificationsController@read')
                         ->name('user.notifications.read');
+                    //Get current logged in user's permission list
+                    Route::get('user/permissions', 'PermissionsController@index')
+                        ->name('user.permissions.index');
                 });
             });
 
