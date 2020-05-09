@@ -67,6 +67,9 @@ Route::namespace('Api\V1')
                 //A user's replies list
                 Route::get('users/{user}/replies', 'RepliesController@userIndex')
                     ->name('users.replies.index');
+                //Resources recommendation
+                Route::get('links', 'LinksController@index')
+                    ->name('links.index');
 
                 //The apis for users who have have signed in
                 Route::middleware('auth:api')->group(function(){
