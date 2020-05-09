@@ -70,6 +70,9 @@ Route::namespace('Api\V1')
                 //Resources recommendation
                 Route::get('links', 'LinksController@index')
                     ->name('links.index');
+                //Get active users link
+                Route::get('active/users', 'UsersController@activeIndex')
+                    ->name('active.users.index');
 
                 //The apis for users who have have signed in
                 Route::middleware('auth:api')->group(function(){
