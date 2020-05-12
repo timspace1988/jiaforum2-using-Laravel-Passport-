@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //So we need to add name space 'Api/V1' to group
 //Otherwise, use controler like 'Api/Vi/VerificationCodesController@store'
 Route::namespace('Api\V1')
-    ->prefix('v1')->name('api.v1.')
+    ->prefix('v1')->name('api.v1.')->middleware('change-locale')
     ->group(function(){
         Route::middleware('throttle:' . config('api.rate_limits.sign'))
             ->group(function (){

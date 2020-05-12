@@ -79,7 +79,8 @@ class AuthorizationsController extends Controller
         //being given a new token to continue using without inputing credentials data,
         //Ohterwise user need to re-input the username and password to login
         if(!$token = \Auth::guard('api')->attempt($credentials)){
-            throw new AuthenticationException('Username or password is incorrect.');
+            //throw new AuthenticationException('Username or password is incorrect.');
+            throw new AuthenticationException(trans('auth.failed'));
         }
 
         // return response()->json([

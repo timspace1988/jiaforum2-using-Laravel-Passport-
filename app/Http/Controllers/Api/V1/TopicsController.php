@@ -15,6 +15,8 @@ class TopicsController extends Controller
 {
     //Create a new topic
     public function store(TopicRequest $request, Topic $topic){
+        //Test throwing an error exception with error code 1003 (which is specified by us)
+        //return $this->errorResponse(403, '您还没有通过认证', 1003);
         $topic->fill($request->all());
         $topic->user_id = $request->user()->id;
         $topic->save();

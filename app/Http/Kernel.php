@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
             'accept.header',
             'throttle:60,1',
             'bindings',
+            //'change-locale', //we can also set it in api.php
         ],
     ];
 
@@ -95,6 +96,9 @@ class Kernel extends HttpKernel
 
         //Add an 'Accept' header
         'accept.header' => \App\Http\Middleware\AcceptHeader::class,
+
+        //Language setting for api
+        'change-locale' => '\App\Http\Middleware\ChangeLocale::class',
     ];
 
     /**
