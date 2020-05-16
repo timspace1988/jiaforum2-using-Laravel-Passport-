@@ -8,6 +8,9 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Reply;
 
+use JPush\PushPayload;
+use App\Notifications\Channels\JPushChannel;
+
 /**
  * When a Notification class implements ShoulQueue,
    Laravel will detect it and automatically put the 'sending notification' job into queue
@@ -37,7 +40,7 @@ class TopicReplied extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         //return ['mail'];
-        return ['database', 'mail'];
+        return ['database', 'mail', JPushChannel::class];
     }
 
     public function toDatabase($notifiable){
@@ -85,4 +88,16 @@ class TopicReplied extends Notification implements ShouldQueue
             //
         ];
     }
+
+    //Use JPush to push the notification to the user of mobile app
+    public function toPush($notifiable, PushPayload $payload): PushPayload{
+
+        return $payload->setPlatform('all')
+                       ->addRegistrationId($notifiable->registration_id)
+                       //registration_id is a new attribute we add to user model
+                       //JPush will use this attribute to find the user's client (iphone or other phone)
+                       //Then push the notification alert (even when your app is not running in backgroud)
+                       ->setNotificationAlert(strip_tags($this->reply->content));
+    }
+
 }
