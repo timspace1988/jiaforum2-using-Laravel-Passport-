@@ -45,6 +45,7 @@ class TopicApiTest extends TestCase
             'user_id' => $this->user->id,
             'title' => 'first test title',
             'body' => clean('first test content', 'user_topic_body'),
+            //clean(A, B) will use B (白名单) to purify（过滤）A
         ];
 
         $response->assertStatus(201)->assertJsonFragment($assertData);
