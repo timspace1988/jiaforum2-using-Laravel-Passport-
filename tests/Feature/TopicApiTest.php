@@ -13,7 +13,7 @@ class TopicApiTest extends TestCase
 {
     use ActingJWTUser;
 
-    use RefreshDatabase;
+    //use RefreshDatabase;//if you use this trait, it will refresh(clear) the database everytime you run the phpunit test
 
     protected $user;
 
