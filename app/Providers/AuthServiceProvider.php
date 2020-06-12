@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -38,5 +39,12 @@ class AuthServiceProvider extends ServiceProvider
             //Check if the current user is 'Founder'
             return \Auth::user()->hasRole('Founder');
         });
+
+        //Passport provides some basic routes
+        Passport::routes();
+        //access token's expire time
+        Passport::tokensExpireIn(now()->addDays(15));
+        //refresh token's expire time
+        Passport::refreshTokensExpireIn(now()->addDays(30));
     }
 }
