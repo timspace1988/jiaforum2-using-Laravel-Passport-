@@ -10,6 +10,11 @@ use App\Http\Requests\Api\V1\SocialAuthorizationRequest;
 use App\Http\Requests\Api\V1\AuthorizationRequest;
 use Auth as auth;
 
+use Psr\Http\Message\ServerRequestInterface;
+use League\OAuth2\Server\AuthorizationServer;
+use Zend\Diactoros\Response as Psr7Response;
+use League\OAuth2\Server\Exception\OAuthServerException;
+
 class AuthorizationsController extends Controller
 {
     //User third party application login
@@ -61,35 +66,45 @@ class AuthorizationsController extends Controller
         return $this->respondWithToken($token)->setStatusCode(201);
     }
 
-    //User login
-    public function store(AuthorizationRequest $request){
-        $username = $request->username;
+    // //User login through JWT (to grant a JWT access token)
+    // public function store(AuthorizationRequest $request){
+    //     $username = $request->username;
 
-        //Check if username is am email or a phone number
-        filter_var($username, FILTER_VALIDATE_EMAIL) ? $credentials['email'] = $username : $credentials['phone'] = $username;
+    //     //Check if username is am email or a phone number
+    //     filter_var($username, FILTER_VALIDATE_EMAIL) ? $credentials['email'] = $username : $credentials['phone'] = $username;
 
-        $credentials['password'] = $request->password;
+    //     $credentials['password'] = $request->password;
 
-        //We have set auth guard api driver as JWT, when we use \Auth::guard('api') to login
-        //It will return a jwt token which contains expire and refresh time and user's id
-        //This token is encoded in 'base64' and is not stored in server, when user revisits the
-        //application, the token will be uploaded to server.
-        //Auth middleware will decode it and check if it is expired
-        //If it is expired but still within the refresh time. it will be refresed and
-        //being given a new token to continue using without inputing credentials data,
-        //Ohterwise user need to re-input the username and password to login
-        if(!$token = \Auth::guard('api')->attempt($credentials)){
-            //throw new AuthenticationException('Username or password is incorrect.');
-            throw new AuthenticationException(trans('auth.failed'));
+    //     //We have set auth guard api driver as JWT, when we use \Auth::guard('api') to login
+    //     //It will return a jwt token which contains expire and refresh time and user's id
+    //     //This token is encoded in 'base64' and is not stored in server, when user revisits the
+    //     //application, the token will be uploaded to server.
+    //     //Auth middleware will decode it and check if it is expired
+    //     //If it is expired but still within the refresh time. it will be refresed and
+    //     //being given a new token to continue using without inputing credentials data,
+    //     //Ohterwise user need to re-input the username and password to login
+    //     if(!$token = \Auth::guard('api')->attempt($credentials)){
+    //         //throw new AuthenticationException('Username or password is incorrect.');
+    //         throw new AuthenticationException(trans('auth.failed'));
+    //     }
+
+    //     // return response()->json([
+    //     //     'access_token' => $token,
+    //     //     'token_type' => 'Bearer',
+    //     //     'expireds_in' => \Auth::guard('api')->factory()->getTTL() * 60,
+    //     // ])->setStatusCode(201);
+
+    //     return $this->respondWithToken($token)->setStatusCode(201);
+    // }
+
+    //User login through Laravel Passport (to grant a Laravel Passport token)
+    public function store(AuthorizationRequest $originRequest, AuthorizationServer $server, ServerRequestInterface $serverRequest){
+        try {
+            //it will return an instance of Zend\Diactoros\Respnose, we also set the status code for this response, it could help us locate the code
+            return $server->respondToAccessTokenRequest($serverRequest, new Psr7Response)->withStatus(201);
+        }catch(OAuthServerException $e){
+            throw new AuthenticationException($e->getMessage());
         }
-
-        // return response()->json([
-        //     'access_token' => $token,
-        //     'token_type' => 'Bearer',
-        //     'expireds_in' => \Auth::guard('api')->factory()->getTTL() * 60,
-        // ])->setStatusCode(201);
-
-        return $this->respondWithToken($token)->setStatusCode(201);
     }
 
     /*
@@ -97,16 +112,36 @@ class AuthorizationsController extends Controller
     We can add an Authorization header to do it
     */
 
-    //Refresh(update) login access token
-    public function update(){
-        $token = auth('api')->refresh();
-        return $this->respondWithToken($token);
+    // //Refresh(update) login access token (JWT)
+    // public function update(){
+    //     $token = auth('api')->refresh();
+    //     return $this->respondWithToken($token);
+    // }
+
+    //Refresh(update) login access token (Laravel Passport)
+    public function update(AuthorizationServer $server, ServerRequestInterface $serverRequest){
+        try {
+            //it will return an instance of Zend\Diactoros\Respnose, we also set the status code for this response, it could help us locate the code
+            return $server->respondToAccessTokenRequest($serverRequest, new Psr7Response)->withStatus(201);
+        }catch(OAuthServerException $e){
+            throw new AuthenticationException($e->getMessage());
+        }
     }
 
-    //Delete the login access token
+    // //Delete the login access token (JWT)
+    // public function destroy(){
+    //     auth('api')->logout();
+    //     return response(null, 204);
+    // }
+
+    //Delete the login access token (Laravel Passport)
     public function destroy(){
-        auth('api')->logout();
-        return response(null, 204);
+        if(auth('api')->check()){
+            auth('api')->user()->token()->revoke();
+            return response(null, 204);
+        }else{
+            throw new AuthenticationException('The token is invalid.');
+        }
     }
 
     //Return the access token after user successfully logining(normal and weixin login)

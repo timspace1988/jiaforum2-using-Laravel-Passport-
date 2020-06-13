@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmailContract, JWTSubject
 {
@@ -20,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
         //Give a alias name to notify() in Notifiable trait, because we will call it in our rewrited notify()
         notify as protected laravelNotify;
     }
+    use HasApiTokens;
 
     //Rewrite notify function in trait Notifiable
     public function notify($instance){
@@ -136,5 +138,15 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
     //This is what we want to add to JWT's payload
     public function getJWTCustomClaims(){
         return [];
+    }
+
+    //If we use Laravel Passport(instead of JWT), it will automatically check if the user model contains findFforPassport function first.
+    //If there is no findForPassport function, it well defaultly use email as username to check the login credentials
+    public function findForPassport($username){
+        //check if user's username input is a an email, if not, we consider it as a phone number
+        //By doing this, the passport will helps us realizing loging with either email or phone number
+        filter_var($username, FILTER_VALIDATE_EMAIL) ? $credentials['email'] = $username : $credentials['phone'] = $username;
+
+        return self::where($credentials)->first();
     }
 }
