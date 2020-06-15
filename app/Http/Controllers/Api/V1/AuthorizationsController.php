@@ -15,8 +15,12 @@ use League\OAuth2\Server\AuthorizationServer;
 use Zend\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\Exception\OAuthServerException;
 
+use App\Traits\PassportToken;
+
 class AuthorizationsController extends Controller
 {
+    use PassportToken;
+
     //User third party application login
     public function socialStore($type, SocialAuthorizationRequest $request){
         $driver = \Socialite::driver($type);
@@ -61,9 +65,16 @@ class AuthorizationsController extends Controller
 
         }
 
-        //get the user logined and return the access token (JWT token)
-        $token = auth('api')->login($user);
-        return $this->respondWithToken($token)->setStatusCode(201);
+        // //get the user logined and return the access token (JWT token)
+        // $token = auth('api')->login($user);
+        // return $this->respondWithToken($token)->setStatusCode(201);
+
+        //Return the response with access token, and the laravel passport will automatically get user logged in (Laravel Passport token)
+        $result = $this->getBearerTokenByUser($user, '1', false);
+
+        //auth('api')->login($user);//Should not use this because "Method Illuminate\\Auth\\RequestGuard::login does not exist." Passport driver does not have login($user) method, this is different from JWT driver
+
+        return response()->json($result)->setStatusCode(201);
     }
 
     // //User login through JWT (to grant a JWT access token)
